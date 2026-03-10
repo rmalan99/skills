@@ -47,6 +47,45 @@ return-to-review / governed close
 - `qa-engineer`: skill reusable de rol QA para framing, riesgo, cobertura, evidencia, validacion y cierre final de la evaluacion gobernada.
 - En `governed-suite`, `qa-suite-orchestrator` es la unica autoridad operativa y aplica el envelope comun anti-bypass.
 
+## Instalacion
+
+- Flujo unico recomendado: ejecutar `scripts/install-qa-skill.sh`; instala la suite en OpenCode y Codex por defecto.
+- Targets nativos detectados por el instalador: `~/.config/opencode/skills` para OpenCode y `~/.codex/skills` para Codex.
+- La instalacion es idempotente sobre `qa-skills-suite`: reemplaza solo el arbol administrado por el script, preserva skills no gestionadas y crea aliases/compatibilidad cuando no chocan con nombres existentes.
+- Flags soportados: `--opencode`, `--codex`, `--dry-run`, `--help`.
+
+```bash
+./scripts/install-qa-skill.sh
+./scripts/install-qa-skill.sh --opencode
+./scripts/install-qa-skill.sh --codex --dry-run
+```
+
+## Instalacion con curl
+
+- El script tambien funciona fuera del repo: si no encuentra `skills/qa-skills-suite` en local, descarga el tarball oficial y extrae solo la suite antes de instalar.
+- Uso curl-friendly:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/rmalan99/skills/main/scripts/install-qa-skill.sh | bash
+curl -fsSL https://raw.githubusercontent.com/rmalan99/skills/main/scripts/install-qa-skill.sh | bash -s -- --opencode
+curl -fsSL https://raw.githubusercontent.com/rmalan99/skills/main/scripts/install-qa-skill.sh | bash -s -- --codex
+```
+
+- Overrides utiles:
+  - `OPENCODE_HOME` para cambiar la raiz de OpenCode.
+  - `CODEX_HOME` para cambiar la raiz de Codex.
+  - `QA_SKILLS_SUITE_TARBALL_URL` para apuntar a otro tarball compatible.
+
+## Descarga rapida con curl
+
+- Si solo queres bajar la suite para copiarla a otro workspace, descarga el repo como tarball y extrae `skills/qa-skills-suite`.
+
+```bash
+curl -L https://github.com/rmalan99/skills/archive/refs/heads/main.tar.gz -o qa-skills-suite.tar.gz
+tar -xzf qa-skills-suite.tar.gz skills-main/skills/qa-skills-suite
+cp -R skills-main/skills/qa-skills-suite ./skills/
+```
+
 ## Flow at a glance
 
 - Modos soportados: `from-zero`, `public-url`, `auth-url`, `baseline-to-artifacts`, `code-enriched`.
